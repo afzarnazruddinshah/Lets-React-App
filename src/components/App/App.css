@@ -1,0 +1,210 @@
+.App {
+  text-align: none;
+}
+
+.App-header {
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Merienda One', Helvetica, sans-serif;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  font: Georgia, 'Times New Roman', Times, serif;
+  position: sticky;
+  background: #000;
+  background-color: #000;
+  top: 0px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+#logo-header
+{
+    font-size: 22pt;
+    font-weight: bold;
+}
+
+#sign-up-button
+{
+    position: relative;
+    float: right;
+    padding: 10px 25px;
+    right: 50px;
+    border-radius: 10px;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.sign-up-button
+{
+  float: right;
+}
+
+.sidebar
+{
+  position: relative;
+  top: 90px;
+  color: #fff;
+  float:left;
+  left: 50px;
+  width:50%;
+  font: 40 10px/1.2 'Merienda One', Helvetica, sans-serif;
+
+}
+
+.login
+{
+  position: absolute;
+  color: #fff;
+  top: 135px;
+  left: 59%;
+  z-index: 2;
+  margin: 5px;
+  color: #fff;
+  margin: 20px;
+  width:  350px;
+
+}
+
+.login input
+{
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid #080615;
+}
+
+.login input:focus
+{
+  background: #c0f1ff;
+}
+
+.login button
+{
+  padding: 7px 32px;
+  border-radius: 10px;
+}
+
+#login-title
+{
+  font-family: 'Merienda One', Helvetica, sans-serif;
+}
+
+#forgot-password-info
+{
+  font-size: 10pt;
+  padding-bottom: 2px;
+}
+
+.signup-form
+{
+  display: none;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 5px;
+  margin: 1-px; 
+}
+
+.login-form
+{
+  padding: 10px;
+  
+  border-radius: 3px;
+}
+
+#login-head1, #login-head2
+{
+  background: green;
+  color: white;
+  font-size: 12pt;
+  border-radius: 3px;
+  border: 1px solid green;
+  padding: 10px 20px;
+  width: 130px;
+  cursor: pointer;
+}
+
+#login-head1
+{
+  border-bottom: 2px solid white;
+  cursor: pointer;
+  
+}
+
+button[type="submit"]
+{
+  background: green;
+  color: white;
+  border: 1px solid green;
+}
+
+#menubar
+{
+  position: relative;
+  float:right;
+  right: 80px;
+}
+
+#menubar a
+{
+  text-decoration: none;
+  font-size: 14px;
+  color: white;
+  margin: 10px;
+  padding-bottom: 5px;
+  border-bottom:#080615 2px solid;
+}
+
+#menubar a:hover
+{
+  border-bottom: rgb(255, 0, 0) 2px solid;
+}
+
+
+.pagenotfound
+{
+  color: white;
+  text-align: center;
+  position: relative;
+  top: 100px;
+  
+}
+
+.pagenotfound .link
+{
+  text-decoration: none !important;
+  border-bottom: 1px solid blue;
+  padding-bottom: 2px;
+  color: white;
+}
+
+#dummy
+{
+  color: white;
+}
+
+.emergency-contact-leads
+{
+  position: absolute;
+  top: 600px;
+  color: white;
+  font-size: 18pt;
+
+}
+
+button
+{
+  outline: none;
+}

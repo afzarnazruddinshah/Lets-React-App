@@ -1,0 +1,115 @@
+
+#settings
+{
+    cursor: pointer;
+}
+
+#logout
+{
+    position: absolute;
+    bottom: 70px;
+}
+
+.menus
+  {
+    position: relative;
+    left: 535px;
+  }
+
+  .navbar {
+    overflow: hidden;
+    font-family:  'Merienda One', Helvetica, sans-serif;
+    position: fixed;
+    top: 15px;
+    float: right;
+    right: 10px;
+    width: 81%;
+    display: block;
+    background: #000;
+    background-color: #000;
+  }
+  
+  .navbar a {
+    font-size: 15px;
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    display:block;
+  }
+
+  .navbar a:focus, .menus a:focus
+  {
+    border-bottom: 2px solid red;
+    padding-bottom: 3px;
+    outline: none;
+  }
+  
+  .dropdown {
+    float: left;
+    overflow: hidden;
+  }
+  
+  .dropbtn {
+    cursor: pointer;
+    font-size: 15px;  
+    padding: 14px 16px;
+    text-align: center;
+    margin: 0;
+    background: none;
+    color: white;
+    border: none;
+    font-family: 'Merienda One', Helvetica, sans-serif;
+    border-bottom: 2px solid #000;
+    padding-bottom: 3px;
+  }
+  
+  .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    border-bottom: 2px solid red;
+    padding-bottom: 3px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px #080615;
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    float: none;
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    padding-bottom: 3px;
+    border-bottom: 2px solid #080615;
+  }
+  
+  .dropdown-content a:hover {
+    border-bottom: 2px solid red;
+    padding-bottom: 3px;
+  }
+  
+  .show {
+    display: block;
+  }
+
+  button:active
+  {
+    border: none;
+    outline: none;
+  }
+
+
+  .app-logoes
+  {
+    position: fixed;
+    top: 15px;
+    float: left;
+  }
+
+  

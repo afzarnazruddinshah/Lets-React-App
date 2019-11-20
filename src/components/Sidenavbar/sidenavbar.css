@@ -1,0 +1,68 @@
+@media screen and (max-height: 450px) {
+    .sidenav 
+    {
+        padding-top: 15px;
+    }
+    .sidenav a 
+    {
+        font-size: 18px;
+    }
+  }
+
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 90px;
+    font-family: 'Merienda One';
+    left: 0;
+    background-color: #000;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 0px;
+    /* box-shadow: 5px 2px 8px 4px #181818; */
+    box-shadow: 10px 0 5px -2px #181818;
+    border-radius: 8px;
+}
+
+.sidenav a , #user-fname, #logoutbtn{
+    padding: 15px 15px 15px 32px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #cfcfcf;
+    display: block;
+    transition: 0.3s;
+    margin:1px;
+    border-bottom: 1px solid black;
+    border-bottom-right-radius: 10px;
+    border-bottom: 1px solid #1f1f1f;
+    outline: none;
+}
+
+.sidenav a:focus, #user-fname:focus, #logoutbtn:focus
+{
+    color: #ffffff;
+    border-bottom: 2px solid red;
+    border-bottom-right-radius: 10px ;
+}
+.sidenav a:hover {
+    color: #ffffff;
+    border-bottom: 2px solid red;
+    border-bottom-right-radius: 10px ;
+}
+
+#user-fname
+{
+    font-size:12pt;
+    color: white;
+    border-bottom: 3px solid #696969;
+    border-bottom-right-radius: 10px ;
+}
+
+#logout-btn
+{
+    position: absolute;
+    width: 245px;
+    bottom: 100px;
+}

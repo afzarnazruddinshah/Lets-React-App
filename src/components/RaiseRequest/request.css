@@ -1,0 +1,116 @@
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #252525; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(68, 68, 68); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(218, 0, 0); 
+  }
+
+
+
+
+#requestform input, button[type="submit"], select
+{
+    padding: 10px 20px;
+    margin: 10px;
+    z-index: 1;
+    border-radius: 4px;
+    border: 3px solid #000;
+}
+
+#requestform input:focus,#requestform select:focus
+{
+    /* border: 3px solid green; */
+    
+    outline: none;
+}
+
+.requestform
+{
+    width: 70% !important;
+    z-index: 100000;
+    position: relative;
+    top: -50px;
+}
+
+#bloodrequest-title
+{
+    font-size: 16pt;
+    width: 235px;
+    border-bottom: 2px solid red;
+}
+
+button[type="submit"]
+{
+    border: 1px solid rgb(255, 255, 255);
+}
+
+#infomsg
+{
+  position: fixed;
+  left: 400px;
+  z-index: 1000000000;
+  color: black;
+  background: #00db00;
+  padding: 10px;
+  border-radius: .4em;
+  font-size: 12pt;
+  display: none;
+}
+
+#infomsg:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 10%;
+	width: 0;
+	height: 0;
+	border: 9px solid transparent;
+	border-bottom-color: #00db00;
+	border-top: 0;
+	margin-left: -9px;
+	margin-top: -9px;
+}
+
+#knowmore
+{
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+#knowmore:hover
+{
+  text-decoration: underline;
+  color: purple;
+}
+
+button:disabled
+{
+  background: rgb(102, 196, 90);
+  color: #ccc;
+  border:1px solid black;
+}
+
+
+.error-field
+{
+  border: 2px solid red;
+}
+
+.reqform
+{
+  position: relative;
+  top: 40px;
+}

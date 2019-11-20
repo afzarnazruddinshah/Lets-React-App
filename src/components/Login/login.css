@@ -1,0 +1,54 @@
+#forgot-password-info
+{
+    cursor: pointer;
+}
+
+.sidebar
+{
+  position: relative;
+  top: 90px;
+  color: #fff;
+  float:left;
+  left: 50px;
+  width:50%;
+  font: 40 10px/1.2 'Merienda One', Helvetica, sans-serif;
+}
+
+#error-msg, #lname-error-msg, #fname-error-msg, #email-error-msg
+{
+  color: red;
+  align-content: center;
+  font-size: 10pt;
+}
+
+.link
+{
+  color: white;
+  margin: 5px;
+  padding: 5px;
+}
+#username-error-msg
+{
+  color: red;
+  font-size: 10pt;
+}
+
+
+#email-signup-error-msg, #password-error-msg
+{
+  position: relative;
+  left: 30px;
+  color:red;
+  font-size: 10pt;
+}
+
+button:disabled
+{
+  cursor:none;
+  background: #ccc;
+}
+
+button
+{
+  cursor: pointer;
+}

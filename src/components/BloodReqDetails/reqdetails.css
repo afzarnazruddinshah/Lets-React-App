@@ -1,0 +1,32 @@
+.bloodreq-details
+{
+    position: relative;
+    left: 200px;
+    /* box-shadow: 5px 5px 5px 5px rgb(56, 56, 56); */
+    width: 700px;
+    padding: 15px;
+    padding-left: 25px;
+    border-radius: 5px;
+}
+
+#heading
+{
+    background: rgb(83, 83, 83);
+    color: rgb(252, 252, 252);
+    position: relative;
+    left: -10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16pt;
+    max-width: 200px;
+    display: block;
+    text-align: center;
+    align-content: center;
+    border-bottom: 1px solid red;
+}
+
+#req-title
+{
+    position: relative;
+    left: -20px;
+}
