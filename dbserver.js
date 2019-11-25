@@ -94,11 +94,18 @@ app.get('/loginuser', (req, res)=> {
     })
 });
 
-app.get('/bloodreqs', (req, res)=> {
-  db.collection('bloodreqs').find({}).toArray( (err, result)=> {
+app.get('/bloodreqs', (req, res)=> 
+{
+  //fetching data from Mongodb Collection called 'bloodreqs'
+  // and sending the result to back end
+  db.collection('bloodreqs').find({}).toArray( (err, result)=> 
+  {
+    //if any error in fetching data from mongodb, log the error
     if (err) return console.log(err);
+
+    //else send it to the client in the response
     console.log('result Fetched');
-    res.send(JSON.stringify(result));
+    res.send(JSON.stringify(result)); //sending the data as a JSON String
   })
 });
 

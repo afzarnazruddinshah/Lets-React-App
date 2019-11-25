@@ -99,6 +99,7 @@ class Login extends Component
         var logbutton1 = document.getElementById("login-head1");
         var logbutton2 = document.getElementById("login-head2");
 
+        console.log('hello here');
         if(e.target.value === "login")
         {
             login[0].style.display = "block";

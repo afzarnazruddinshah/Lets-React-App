@@ -71,7 +71,7 @@ class LandingPage extends Component
             ()=> { return { bloodreqs: (res.data)};}
           );
 
-      })
+      });
   }
 
   render()

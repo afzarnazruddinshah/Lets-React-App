@@ -39,7 +39,7 @@ function loadFromLocalStorage(){
     }
 }
 
-// console.log(React.version);
+ console.log(React.version);
 const persistedState = loadFromLocalStorage();
 
 
