@@ -35,22 +35,37 @@ class RequestForm extends Component {
         genders:[ 'Male','Female', 'Others'],
         isFormValid: true,
         genderErr: false,
-        blgrpErr: false
+        blgrpErr: false,
+        requestOwner: ''
     }
 
-    
     constructor(props)
     {
         super(props);
         this.textInput = React.createRef();
         this.genderRef = React.createRef();
         this.blgrpRef = React.createRef();
+        // this.state.requestOwner = this.props.requestOwner;
+        // console.log(this.state.requestOwner);
+        
     }
 
+
+    getRequestOwner = () => {
+        console.log('getRequestOwner');
+        var stateProps = JSON.parse(localStorage.getItem('state'));
+        var requestOwner = String(stateProps.auth.email);
+        this.setState(
+            () => { return { requestOwner: requestOwner};}, 
+            ()=> { console.log('requestOwner Updated');}
+        );
+
+    }
     componentDidMount()
     {
         this.setMinDate();
         this.textInput.current.focus();
+        this.getRequestOwner();
         // console.log(this.genderRef);
     }
     
@@ -132,7 +147,32 @@ class RequestForm extends Component {
 
     callAPI = () =>
     {
+        var token = localStorage.getItem('token');
         console.log(this.state);
+        axios({
+            method: 'post',
+            url: 'http://localhost:3001/newbloodreq',
+            data: {
+                ptntname: this.state.ptntname,
+                ptntage: this.state.ptntage,
+                ptntgender: this.state.ptntgender,
+                ptntblgrp : this.state.ptntblgrp,
+                unitsreq: this.state.unitsreq,
+                reqreason: this.state.reqreason,
+                dateofreq: this.state.dateofreq,
+                hospname: this.state.hospname,
+                hosploc: this.state.hosploc,
+                attendeename: this.state.attendeename,
+                cntctno1: this.state.cntctno1,
+                cntctno2: this.state.cntctno2,
+                requestOwner: this.state.requestOwner
+            },
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          })
         axios.post('http://localhost:3001/newbloodreq', 
         {
             ptntname: this.state.ptntname,
@@ -146,7 +186,8 @@ class RequestForm extends Component {
             hosploc: this.state.hosploc,
             attendeename: this.state.attendeename,
             cntctno1: this.state.cntctno1,
-            cntctno2: this.state.cntctno2
+            cntctno2: this.state.cntctno2,
+            requestOwner: this.state.requestOwner
         })
         .then(res => {
             console.log(res);
@@ -165,15 +206,10 @@ class RequestForm extends Component {
     }
     render() 
     {
-
-        
-        //document.getElementById("dateofreq").setAttribute("min", today);
         const dateofBirth = this.state.bloodgroups.map((item, key)=> <option key={key} value={item}>{item}</option> );
         const genders = this.state.genders.map((item, key)=> <option key={key} value={item}>{item}</option>)
         
-        return ( 
-
-            
+        return (   
         <div className="reqform">
 
          <p id="bloodrequest-title">Raise Blood Request : </p>
@@ -201,16 +237,16 @@ class RequestForm extends Component {
                 required/>
 
         
-                            <select 
-                                name="ptntgender" 
-                                id="ptntgender"
-                                onChange={this.handleInput}
-                                ref={this.genderRef}
-                                className={this.state.genderErr===true?'error-field':null}
-                                required>
-                                <option value="null">Select Gender</option>
-                                {genders}
-                            </select>
+            <select 
+                name="ptntgender" 
+                id="ptntgender"
+                onChange={this.handleInput}
+                ref={this.genderRef}
+                className={this.state.genderErr===true?'error-field':null}
+                required>
+                <option value="null">Select Gender</option>
+                {genders}
+            </select>
 
             
             <br />

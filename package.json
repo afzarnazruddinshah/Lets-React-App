@@ -10,6 +10,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.3.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -24,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "nodemon dbserver.js"
   },
   "eslintConfig": {
     "extends": "react-app"

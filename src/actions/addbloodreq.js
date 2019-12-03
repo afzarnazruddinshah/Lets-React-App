@@ -23,7 +23,7 @@ export function removeBloodRequest()
     return {
         type: 'removeReq',
         payload: {
-            null: null
+            nullObject: null
         }
     }
 }

@@ -21,7 +21,7 @@ class RaiseRequest extends Component {
     {
       super(props);
 
-      // console.log('Props of Raise Blood Request', props);
+      console.log('Props of Raise Blood Request', props);
       this.state.username = this.props.auth.username;
       this.state.fname = this.props.auth.fname;
       this.state.isAuth = this.props.auth.isAuth;
@@ -55,7 +55,7 @@ class RaiseRequest extends Component {
               </Fragment>
 
               <div className="bloodrequest requestform">
-                <RequestForm />
+                <RequestForm requestOwner={this.props.auth.email}/>
               <br /><br />
               </div>
 

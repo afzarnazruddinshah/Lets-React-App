@@ -14,7 +14,6 @@ class BloodRequest extends Component {
     onAddBloodRequest = () =>
     {
         console.log("Displaying Request Details..");
-        // console.log(this.props);
         this.props.onAddBloodRequest(this.props.bldreq);
         this.setState(
             ()=> { return { redirect: true};}
@@ -41,7 +40,7 @@ class BloodRequest extends Component {
                         {this.props.bldreq.dateofreq} <br/>
                         Hospital : {this.props.bldreq.hospname}, 
                         {this.props.bldreq.hosploc} &nbsp;
-                        <span id="knowmore" onClick={()=> this.onAddBloodRequest()}>...know more </span> </p>
+                        <a id="knowmore" onClick={()=> this.onAddBloodRequest()}>...know more </a> </p>
                  
                 </div>
                 <br />

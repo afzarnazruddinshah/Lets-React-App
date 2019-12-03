@@ -1,12 +1,13 @@
 
-export function LoginToApp(email, fname)
+export function LoginToApp(email, fname, token)
 {
     return {
         type: 'login',
         payload: {
             email: email,
             fname : fname,
-            isAuth : true
+            isAuth : true,
+            token: token
         }
     }
 }
@@ -18,7 +19,8 @@ export function LogoutFromApp()
         payload: {
             isAuth : false,
             email: 'unknown',
-            fname: 'unknown'
+            fname: 'unknown',
+            token: 'none'
         }
     }
 }

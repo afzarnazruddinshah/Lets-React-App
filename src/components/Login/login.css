@@ -16,9 +16,10 @@
 
 #error-msg, #lname-error-msg, #fname-error-msg, #email-error-msg
 {
-  color: red;
+  
   align-content: center;
   font-size: 10pt;
+  color: red;
 }
 
 .link
@@ -51,4 +52,32 @@ button:disabled
 button
 {
   cursor: pointer;
+}
+
+.d-none
+{
+  display: none;
+}
+
+.d-block
+{
+  display: block;
+}
+
+.border-bottom-present
+{
+  border-bottom: 2px solid white;
+}
+
+.border-bottom-absent
+{
+  border-bottom: 0px solid white;
+}
+
+#login-error-msg
+{
+  font-size: 10pt;
+  color: red;
+  display: block;
+  align-content: center;
 }
