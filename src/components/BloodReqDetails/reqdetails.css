@@ -1,27 +1,25 @@
 .bloodreq-details
 {
     position: relative;
-    left: 200px;
-    /* box-shadow: 5px 5px 5px 5px rgb(56, 56, 56); */
+    left: 300px;
+    /* left: 200px; */
     width: 700px;
     padding: 15px;
     padding-left: 25px;
     border-radius: 5px;
 }
 
+.bloodreq-details p
+{
+    font-size: 13pt;
+}
 #heading
 {
-    background: rgb(83, 83, 83);
     color: rgb(252, 252, 252);
-    position: relative;
-    left: -10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 16pt;
+    padding: 5px 5px;
+    font-size: 13pt;
     max-width: 200px;
-    display: block;
-    text-align: center;
-    align-content: center;
+    display: ruby;
     border-bottom: 1px solid red;
 }
 
@@ -29,4 +27,5 @@
 {
     position: relative;
     left: -20px;
+    font-size: 15pt;
 }

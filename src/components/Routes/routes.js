@@ -5,12 +5,17 @@ import Header from '../Header/header'
 import Login from '../Login/login';
 // import Sidebar from '../Sidebar/sidebar';
 import LandingPage from '../LandingPage/landingpage';
-import RaiseRequest from '../RaiseRequest/raiserequest';
-import DevComp from '../devComp/devcomp';
-import RequestDetails from './../BloodReqDetails/requestdetails';
+// import RaiseRequest from '../RaiseRequest/raiserequest';
+import Feed from '../Feed/feed';
+import RequestForm from '../RaiseRequest/requestform';
+import DisplayDetails from '../BloodReqDetails/displayDetails';
+import MyRequests from '../MyRequests/myrequests';
+// import RequestDetails from './../BloodReqDetails/requestdetails';
 import Spinner from '../Spinner/spinner';
-
+import ErrorBoundary from '../ErrorBoundary/errorboundary';
+import TodoApp from '../devComp/devcomp';
 const Sidebar = lazy(()=> import('../Sidebar/sidebar'));
+
 const Routes = () => 
 {
     return <BrowserRouter>
@@ -22,17 +27,25 @@ const Routes = () =>
                   <Route path='/login' render={ () =>
                               <div>
                                   <div className="App-header">
-                                    <Header/>
+                                    <ErrorBoundary>
+                                      <Header/>
+                                    </ErrorBoundary>
                                   </div>
 
                                   <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
                                   <div className="sidebar">
-                                    <Sidebar />
+                                  <ErrorBoundary>
+                                      <Sidebar />
+                                  </ErrorBoundary>
+                                    
                                   </div>
                                   </Suspense>
 
                                   <div className="login">
+                                  <ErrorBoundary>
                                     <Login />
+                                  </ErrorBoundary>
+                                    
                                   </div>
                                   
                               </div>
@@ -56,17 +69,17 @@ const Routes = () =>
 
                   <Route path='/devurl' render={ ()=>
                     <div className="devcomp">  
-                      <DevComp />
+                      <TodoApp />
                     </div>
                           } />
-                  
-                  
 
                   <Route
                       render={
                         props =>
                           <Fragment>
-                            <PageNotFound />
+                            <ErrorBoundary>
+                              <PageNotFound />
+                            </ErrorBoundary>
                           </Fragment>
                       }
                     />
@@ -74,6 +87,56 @@ const Routes = () =>
                
         </BrowserRouter>
     
+}
+
+
+export const AppRoutes = () => 
+{
+  return <BrowserRouter>
+      <Switch>
+        <Route exact path="/landingpage" render={() => (
+                  <Redirect to="/landingpage/feed"/>
+                    )}/>
+
+        <Route exact path="/landingpage/feed" render={()=> 
+        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+            <ErrorBoundary>
+              <Feed />
+            </ErrorBoundary>
+          </Suspense>
+          }/>
+        
+        <Route path="/landingpage/raiserequest/" render={()=> 
+          <div className="bloodrequest requestform">
+            <ErrorBoundary>
+              <RequestForm />
+            </ErrorBoundary>
+          
+        <br /><br />
+        </div>
+        } />
+      
+        <Route path='/landingpage/bloodreq' render={ ()=> 
+            <Fragment>
+            <ErrorBoundary>
+                <DisplayDetails req={this.props}/>
+            </ErrorBoundary>   
+            </Fragment>
+          } />
+        
+        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+          <Route path='/landingpage/myrequests/' render={ ()=> 
+            
+              <Fragment>
+                <ErrorBoundary>
+                    <MyRequests />
+                </ErrorBoundary>
+              </Fragment>
+              }
+          />
+        </Suspense>
+      </Switch>
+  </BrowserRouter>
 }
 
 export default Routes;

@@ -119,19 +119,42 @@ app.post('/newuser', (req, res)=> {
   })
 });
 
+
+app.post('/api/loginUser', (req, res)=> {
+  console.log(req.query); // { username: 'Livingstone', password: 'livingstonepwd'}
+  var usr = req.query.username;
+  var pwd = req.query.password;
+
+  if( usr === 'Livingstone' && pwd === 'livingstonepwd')
+  {
+    res.send('authorized');
+  }
+  else
+  {
+    res.send('unauthorized');
+  }
+});
+
+
 app.post('/myrequests',verifyToken, (req, res)=> {
   var  requestOwner = req.body.requestOwner;
   console.log(requestOwner);
-  console.log(req.body);
-  console.log(req.params);
-  console.log(req.query);
   db.collection('bloodreqs').find({'requestOwner': requestOwner}, {}).toArray((err, result)=> 
   {
     //if any error in fetching data from mongodb, log the error
     if (err) return console.log(err);
     //else send it to the client in the response
     console.log('My Requests fetched');
-    res.send(JSON.stringify(result)); //sending the data as a JSON String
+    console.log(result);
+    if(result.length === 0)
+    {
+      res.send('none');
+    }
+    else
+    {
+      res.send(JSON.stringify(result)); //sending the data as a JSON String
+    }
+    
   });
 });
 

@@ -3,9 +3,8 @@ import {connect } from 'react-redux';
 import axios from 'axios';
 import { withRouter, Redirect } from "react-router-dom";
 import './login.css';
-import { LogoutFromApp, LoginToApp } from '../../actions/useraction';
-import { removeBloodRequest} from '../../actions/addbloodreq';
-import { sign } from 'crypto';
+import { LogoutFromApp, LoginToApp } from '../../actions/loginActions';
+import { removeBloodRequest} from '../../actions/bloodReqActions';
 // import { loginForm } from './loginForm';
 class Login extends Component
 {
@@ -31,22 +30,15 @@ class Login extends Component
         showLogin: true
     }
 
-    constructor(props)
-    {
-        super(props);
-    }
-
     componentDidMount()
     {
         document.title = "LetsReact | Home";
         //Logging out the state
         this.props.onLogoutFromApp();  
         this.onremoveBloodRequest();
-
         //Checking Server
         this.checkServer();
     }
-
 
     componentDidUpdate() {}
 
@@ -106,7 +98,7 @@ class Login extends Component
     handleSetState = (key, value)=> {
 
         this.setState(()=> { return { [key]: value};},
-        ()=> { console.log(key+' changed');}
+        ()=> { console.log('key changed');}
         );
     }
 
@@ -150,8 +142,6 @@ class Login extends Component
         if(e.target.name === 'fname' || e.target.name === 'lname') 
         {
             var name = e.target.value;
-            var id = String(e.target.name)+'err';
-            var errorparaid = e.target.name.concat('-error-msg');
             var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
             var hasNumber = /\d/;
             if( name === ' ' || format.test(name) || hasNumber.test(name))
@@ -272,11 +262,12 @@ class Login extends Component
         const pwderrmsg = <Fragment> <br />Passwords Don't Match</Fragment>;
         const pwderr = this.state.pwderr === true? pwderrmsg: null;
         
+        const LoginClassName = this.state.showLogin === true ?'login-form d-block': 'login-form d-none';
+        const SignupClassName = this.state.showLogin === true ?'signup-form d-none': 'signup-form d-block';
 
         const loginForm = 
         <div 
-            className="login-form" 
-            className={this.state.showLogin === true? '.d-block': '.d-none'}>
+            className={LoginClassName} >
 
             <form 
                 method="POST" 
@@ -328,8 +319,7 @@ class Login extends Component
 
             const signupForm = 
             <div 
-                className="signup-form" 
-                className={this.state.showLogin === true? '.d-none': '.d-black'}>
+                className={SignupClassName}>
 
             <form method="POST" onSubmit={this.handleSubmitSignUp}>
                 <h2 id="login-title">&nbsp;Sign Up</h2>

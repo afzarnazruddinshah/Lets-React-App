@@ -1,7 +1,12 @@
-.devcomp
+#page-no
 {
-    position: relative;
-    top: 200px;
-    text-decoration-color: white;
-    color: rgb(255, 255, 255);
+    padding: 5px;
+    margin: 5px;
+}
+
+#page-no span
+{
+    margin: 5px;
+    border:1px solid white;
+    cursor: pointer;
 }

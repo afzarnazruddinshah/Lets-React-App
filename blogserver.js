@@ -7,14 +7,27 @@
         app.use(bodyParser.json());
         app.use(cors());
 
-        
         app.get('/api/message', (request, response)=> {
 
             //Handling your request and Responding appropriately
             response.send('This is the welcome message');
         });
 
-    app.listen(3001, () => {
-        console.log('listening on 3001')
-     });
+        app.post('/api/loginUser', (req, res)=> {
+            console.log(req.body);
+            res.send('received');
+        });
+
+        app.listen(3001, () => {
+            console.log('listening on 3001')
+            });
+
+
+            var userCredentials = { username: 'Livingstone', password: 'livingstonepw'};
+            axios.post('http://localhost:3001/api/loginUser',userCredentials)
+            .then( (response)=> 
+            {
+                console.log(response);
+            });
               
+        

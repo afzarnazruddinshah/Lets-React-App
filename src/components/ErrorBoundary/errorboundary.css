@@ -1,0 +1,7 @@
+.error-block p
+{
+    color: #ccc;
+    font-size: 14pt;
+    border-radius: 5px;
+    background: rgb(182, 0, 0);
+}

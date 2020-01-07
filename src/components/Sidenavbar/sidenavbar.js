@@ -8,6 +8,7 @@ class Sidenavbar extends Component
     state = {
         logout: false
     }
+
     openAlert = () => 
     {
         if(window.confirm('Are you sure to logout?'))
@@ -34,10 +35,11 @@ class Sidenavbar extends Component
             <div className="sidenav">
                 <p id="user-fname">{this.props.fname}</p>
                 <Link to="/landingpage" tabIndex="5" >My Profile</Link>
-                <a href="/landingpage/myrequests" tabIndex="6">My Requests</a>
+                <a href="/landingpage/myrequests/" tabIndex="6">My Requests</a>
+                <Link to="/landingpage/myrequests/">Hey</Link>
                 <a href="##" tabIndex="7">My Donations</a>
                 <a href="##" tabIndex="8"> My Medical Profile</a>
-                <a onClick={this.openAlert}  id="logout-btn" tabIndex="9">Logout <FaSignOutAlt /></a>
+                <a href="##" onClick={this.openAlert}  id="logout-btn" tabIndex="9">Logout <FaSignOutAlt /></a>
              </div>
           );
     }

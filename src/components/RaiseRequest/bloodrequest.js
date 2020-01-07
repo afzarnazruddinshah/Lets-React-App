@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import '../LandingPage/landingpage.css';
 // import { Link } from 'react-router-dom';
-import {addBloodRequest} from './../../actions/addbloodreq';
+import {addBloodRequest} from './../../actions/bloodReqActions';
 import {connect } from 'react-redux';
 import './request.css';
 import { Redirect } from "react-router-dom";
@@ -24,12 +24,12 @@ class BloodRequest extends Component {
     {
         if (this.state.redirect === true) 
         {
-            return <Redirect to='/bloodreq' /> 
+            return <Redirect to='/landingpage/bloodreq' /> 
         }
 
         return (
             <React.Fragment>
-                <div className="bloodreqblock">
+                <div className="req-block">
                     <p id="request-title">
                         #{this.props.id+1}  &nbsp;
                         Req: {this.props.bldreq.ptntblgrp} &nbsp; for &nbsp;
@@ -40,7 +40,7 @@ class BloodRequest extends Component {
                         {this.props.bldreq.dateofreq} <br/>
                         Hospital : {this.props.bldreq.hospname}, 
                         {this.props.bldreq.hosploc} &nbsp;
-                        <a id="knowmore" onClick={()=> this.onAddBloodRequest()}>...know more </a> </p>
+                        <a href="##" id="knowmore" onClick={this.onAddBloodRequest}>...know more </a> </p>
                  
                 </div>
                 <br />

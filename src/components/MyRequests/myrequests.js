@@ -1,35 +1,23 @@
 import React, { Component , lazy } from 'react';
 import axios from 'axios'
-import Spinner from '../Spinner/spinner';
 const BloodRequest = lazy(()=> import('../RaiseRequest/bloodrequest'));
 // import BloodRequest from '../RaiseRequest/bloodrequest';
 
 class MyRequests extends Component {
     state = { 
         requestOwner: '',
-        bloodreqs: [
-            {
-              ptntname: '', 
-              ptntgender: '', 
-              ptntage: '', 
-              ptntblgrp: '', 
-              unitsreq: '', 
-              hospname : '', 
-              hosploc: '', 
-              reqreason: '', 
-              attendeename: '', 
-              cntctno1: '', 
-              cntctno2: '', 
-              dateofreq: null
-            }
-          ]
+        bloodreqs: [],
+        dataPresent: false
      }
 
      componentDidMount()
      {
-         this.getMyRequests();
+       console.log('its here');
+      this.getMyRequests();
      }
-     getMyRequests = () => {
+
+     getMyRequests = () => 
+     {
         //  var requestOwner = this.state.requestOwner;
          var stateProps = JSON.parse(localStorage.getItem('state'));
          var requestOwner = String(stateProps.auth.email);
@@ -47,29 +35,30 @@ class MyRequests extends Component {
           }
         })
          .then(res => {
-            console.log('Getting My Blood Requests..');
-            this.setState(
-              ()=> { return { bloodreqs: (res.data)};},
-              ()=> { console.log('bloodreqs changed');}
-            );
-  
+            if(res.data !== 'none')
+            {
+              this.setState(
+                ()=> { return { bloodreqs: (res.data), dataPresent: true};},
+                ()=> { console.log('api fetched');} );
+            }
         })
         .catch( err =>{
-            // console.log(err);
-        })
+            console.log(err);
+        });
      }
-    render() {
-        
-        const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
-        const feed = this.state.bloodreqs[0].dateofreq === null ? <Spinner /> : mapper;
-        return ( 
+     
+    render() 
+    { 
+      const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
+      const feed = this.state.dataPresent === false ? <small>You don't have any requests..</small> : mapper;
+      return( 
             <div className="bloodrequest">
                 <p>My Blood Requests:</p>
                 <div>
                   {feed}
                 </div>
-              </div>
-         );
+            </div>
+        );
     }
 }
  

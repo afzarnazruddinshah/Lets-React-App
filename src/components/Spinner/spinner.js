@@ -1,10 +1,14 @@
 import React from 'react';
 import './spinner.css';
-function Spinner()
+class Spinner extends React.Component
 {
-    return <React.Fragment>
+    render()
+    {
+       return <React.Fragment>
            <i className="fa fa-circle-o-notch fa-spin"></i>
-        </React.Fragment>
+        </React.Fragment> 
+    }
+    
     
 }
 
