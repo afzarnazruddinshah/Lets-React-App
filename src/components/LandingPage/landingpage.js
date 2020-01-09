@@ -1,12 +1,17 @@
 import React, { Component, Fragment, Suspense } from 'react';
 import { connect } from 'react-redux'
-import {withRouter,Redirect } from 'react-router-dom';
+import {BrowserRouter, Route, Redirect,Switch } from 'react-router-dom'
+import {withRouter } from 'react-router-dom';
+import Feed from '../Feed/feed';
 import './landingpage.css';
 import '../App/App.css';
 import Header1 from '../Header1/header1';
 import Sidenavbar from '../Sidenavbar/sidenavbar';
 import ErrorBoundary from '../ErrorBoundary/errorboundary';
-import { AppRoutes } from '../Routes/routes';
+import DisplayDetails from '../BloodReqDetails/displayDetails';
+import MyRequests from '../MyRequests/myrequests';
+import Spinner from '../Spinner/spinner';
+import RequestForm from '../RaiseRequest/requestform';
 class LandingPage extends Component
 {
 
@@ -42,7 +47,51 @@ class LandingPage extends Component
             </ErrorBoundary>
           </Fragment>
           
-          <AppRoutes />
+          <BrowserRouter>
+      <Switch>
+        <Route exact path="/landingpage" render={() => (
+                  <Redirect to="/landingpage/feed"/>
+                    )}/>
+
+        <Route exact path="/landingpage/feed" render={()=> 
+        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+            <ErrorBoundary>
+              <Feed />
+            </ErrorBoundary>
+          </Suspense>
+          }/>
+        
+        <Route path="/landingpage/raiserequest/" render={()=> 
+          <div className="bloodrequest requestform">
+            <ErrorBoundary>
+              <RequestForm />
+            </ErrorBoundary>
+          
+        <br /><br />
+        </div>
+        } />
+      
+        <Route path='/landingpage/bloodreq' render={ ()=> 
+            <Fragment>
+            <ErrorBoundary>
+                <DisplayDetails req={this.props}/>
+            </ErrorBoundary>   
+            </Fragment>
+          } />
+        
+        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+          <Route path='/landingpage/myrequests/' render={ ()=> 
+            
+              <Fragment>
+                <ErrorBoundary>
+                    <MyRequests />
+                </ErrorBoundary>
+              </Fragment>
+              }
+          />
+        </Suspense>
+      </Switch>
+  </BrowserRouter>
           
 
       </div>

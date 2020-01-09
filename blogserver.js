@@ -29,5 +29,33 @@
             {
                 console.log(response);
             });
+
+            //General setState method
+            this.setState( 
+                { stateKey: 'stateValue'}
+            );
+            
+            //Return a function that returns the object, along with a call-back function
+            this.setState( 
+                () => { return  { stateKey: 'stateValue'} },
+                () => { console.log('updated');}
+            );
+            
+            handleBtnClick = e =>{
+                console.log('Say hello');
+            }
+
+            <button onClick={ (e) => this.handleBtnClick(e) } >Submit </button>
+
+            //Binding in the constructor
+            constructor(props)
+            {
+                super(props);
+                this.handleBtnClick = this.handleBtnClick.bind(this);
+            }
+
+            //Binding this in render
+            <button onClick={this.handleChange.bind(this)} >Submit </button>
+
               
         

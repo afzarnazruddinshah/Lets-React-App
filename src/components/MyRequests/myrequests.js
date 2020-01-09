@@ -1,5 +1,6 @@
 import React, { Component , lazy } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import './myrequests.css';
 const BloodRequest = lazy(()=> import('../RaiseRequest/bloodrequest'));
 // import BloodRequest from '../RaiseRequest/bloodrequest';
 
@@ -12,7 +13,6 @@ class MyRequests extends Component {
 
      componentDidMount()
      {
-       console.log('its here');
       this.getMyRequests();
      }
 
@@ -50,7 +50,7 @@ class MyRequests extends Component {
     render() 
     { 
       const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
-      const feed = this.state.dataPresent === false ? <small>You don't have any requests..</small> : mapper;
+      const feed = this.state.dataPresent === false ? <small id="no-request">You don't have any requests. Also, Thank God for keeping your acquaintances safe !</small> : mapper;
       return( 
             <div className="bloodrequest">
                 <p>My Blood Requests:</p>

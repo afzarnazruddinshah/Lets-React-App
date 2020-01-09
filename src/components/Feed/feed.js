@@ -44,12 +44,6 @@ class Feed extends Component {
         this.getBloodReqs();
     }
 
-    componentWillUnmount()
-    {
-        console.log('unmounting');
-        console.log(this.props.location);
-    }
-
     getBloodReqs = () => 
     {
         var token = String(this.state.token);
@@ -65,7 +59,6 @@ class Feed extends Component {
                 }
             })
             .then(res => {
-                console.log('Getting Blood Requests...');
                 this.setState(
                 ()=> { return { bloodreqs: (res.data)};}
                 );

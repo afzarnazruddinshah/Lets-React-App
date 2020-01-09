@@ -1,6 +1,10 @@
-start cmd.exe   & ::  to run app
-start cmd.exe   & ::  for db server
-start cmd.exe   & ::  for code . and running any package installations
+REM start C:/
+REM start cmd.exe /K "cd /d C:\Program Files\MongoDB\Server\4.2\bin"
+REM start cmd.exe /K "cd /d D:\Livingstone\React\letsreact"
 
-cmd.exe /K "cd /C C:\Program Files\MongoDB\Server\4.2\bin"
-cmd.exe /K "cd /C C:\Program Files\MongoDB\Server\4.2\bin"
+REM sample.bat
+
+REM startApp.bat && pause 
+REM startServer.bat && pause
+
+start C:\ProgramFiles\MongoDB\Server\4.2\bin\mongod.exe

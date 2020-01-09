@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import './header1.css'
-import blood_drop from './../../../src/blood_drop2.png'
+import blood_drop from './../../../src/blood_drop2.png';
+import { withRouter } from 'react-router-dom';
 
 class Header extends Component
 {
+
+    goToHome = e => {
+        this.props.history.push('/landingpage');
+    }
+
+    goToRaiseRequest = e => {
+        this.props.history.push('/landingpage/raiserequest');
+    }
+
     render()
     {
         return(
@@ -19,17 +29,15 @@ class Header extends Component
 
                 <div className="navbar"> 
                     <div className="menus">
-                        <a href="/landingpage" tabIndex="1">Home</a>  
+                        <a href="##" onClick={this.goToHome} tabIndex="1">Home</a>  
                         <Link to="/devurl" tabIndex="2"> Dev Url</Link>
-                        <a href="/landingpage/raiserequest" tabIndex="3"> Raise Blood Request</a>
-                        <a href="##" tabIndex="4">Emergency Contact Leads</a>
+                        <a href="##" onClick={this.goToRaiseRequest} tabIndex="3"> Raise Blood Request</a>
+                        <a href="##" tabIndex="4">Emergency Contacts</a>
                     </div>
                 </div>
             </div>      
         );
-    }
-        
-    
+    } 
 }
 
-export default Header;
+export default withRouter(Header);
