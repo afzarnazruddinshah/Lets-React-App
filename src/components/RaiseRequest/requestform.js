@@ -2,10 +2,10 @@ import React, { Component} from 'react';
 import axios from 'axios';
 // import $ from 'jquery'; 
 import './request.css';
+import { ReplSet } from 'mongodb';
 //Material UI
 // import TextField from '@material-ui/core/TextField';
 // import { withStyles } from '@material-ui/core/styles';
-
 // import { Redirect } from 'react-router-dom';
 
 class RequestForm extends Component {
@@ -36,7 +36,8 @@ class RequestForm extends Component {
         isFormValid: true,
         genderErr: false,
         blgrpErr: false,
-        requestOwner: ''
+        requestOwner: '',
+        dbUpdated: 'none'
     }
 
     constructor(props)
@@ -46,11 +47,8 @@ class RequestForm extends Component {
         this.genderRef = React.createRef();
         this.blgrpRef = React.createRef();
         // this.state.requestOwner = this.props.requestOwner;
-        // console.log(this.state.requestOwner);
-        
+        // console.log(this.state.requestOwner); 
     }
-
-
     getRequestOwner = () => {
         console.log('getRequestOwner');
         var stateProps = JSON.parse(localStorage.getItem('state'));
@@ -63,6 +61,7 @@ class RequestForm extends Component {
     }
     componentDidMount()
     {
+        document.title = "LetsReact | Raise Request";
         this.setMinDate();
         this.textInput.current.focus();
         this.getRequestOwner();
@@ -151,7 +150,7 @@ class RequestForm extends Component {
         console.log(this.state);
         axios({
             method: 'post',
-            url: 'http://localhost:3001/newbloodreq',
+            url: 'http://localhost:3001/api/newbloodreq',
             data: {
                 ptntname: this.state.ptntname,
                 ptntage: this.state.ptntage,
@@ -173,24 +172,21 @@ class RequestForm extends Component {
               'Authorization': `Bearer ${token}`
             }
           })
-        axios.post('http://localhost:3001/newbloodreq', 
-        {
-            ptntname: this.state.ptntname,
-            ptntage: this.state.ptntage,
-            ptntgender: this.state.ptntgender,
-            ptntblgrp : this.state.ptntblgrp,
-            unitsreq: this.state.unitsreq,
-            reqreason: this.state.reqreason,
-            dateofreq: this.state.dateofreq,
-            hospname: this.state.hospname,
-            hosploc: this.state.hosploc,
-            attendeename: this.state.attendeename,
-            cntctno1: this.state.cntctno1,
-            cntctno2: this.state.cntctno2,
-            requestOwner: this.state.requestOwner
-        })
         .then(res => {
-            console.log(res);
+            if( res.data.error === false && res.data.payload.result === 'dpUpdated')
+            {
+                this.setState(
+                    () => { return { dbUpdated: 'true'}},
+                    () => { console.log('updated');}
+                );
+            }
+            else if( res.data.error === true && res.data.payload.result === null)
+            {
+                this.setState(
+                    () => { return { dbUpdated: 'false'}},
+                    () => { console.log('updated');}
+                );
+            }
             });
     }
     handleRequest = (event) =>

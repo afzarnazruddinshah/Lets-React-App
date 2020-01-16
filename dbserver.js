@@ -5,11 +5,9 @@ const jwt = require('jsonwebtoken');
 // Initialize the app
 const app = express();
 // https://expressjs.com/en/guide/routing.html
-// app.use(bodyParser.urlencoded({extended: true}))
-//urlencoded function extracts form data and puts them into the body of the res object
 
+const PORT =3001;
 //*****Setting up the Express Server*****//
-// app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // Then use it before your routes are set up:
@@ -19,68 +17,79 @@ app.use(cors());
 var mongoDbURL = 'mongodb://localhost:27017'
 const MongoClient = require('mongodb').MongoClient
 MongoClient.connect(mongoDbURL, (err, database) => {
-     console.log('server connected');
      if(err) throw err;
-     db = database.db('letsreact') // whatever your database name is
-     app.listen(3001, () => {
-     console.log('listening on 3001')
+     db = database.db('letsreact') // Specify DB name here
+     app.listen(PORT, () => {
   });
 });
 
-//************************************//
 //*****API Routes start from here*****//
-//************************************//
 //Root API Route
 app.get('/', (req, res)=> {
   res.send('Welcome to LetsReact Server ');
 });
 
 //Logging in to the Application
-app.get('/loginuser', (req, res)=> {
-  var { email, password} = req.query;
-  console.log(email, password);
+app.post('/api/auth', (req, res)=> {
+  var { email, password} = req.body;
   db.collection('users').findOne(
     {email: email, password: password}
     , (err, result)=> {
       if (err)
       {
-        console.log(err);
-        res.status(200).send({result: 'error', auth: false, token: 'none'});
+        // console.log(err);
+        res.status(200).send({ error: true, payload: { token: null, errormsg: 'exception'}});
+        // res.status(200).send({result: 'error', auth: false, token: 'none'});
       }
       if(result === null)
       {
-        res.status(200).send({result: 'none', auth: false, token:'none'});
+        res.status(200).send({ error: true, payload: { token: null, errormsg: 'notfound'}});
+        // res.status(200).send({result: 'none', auth: false, token:'none'});
       }
       else
       {
         let payload = { subject: result._Id};
         let token = jwt.sign(payload, 'secretKey');
-        res.status(200).send({result: result, auth: true, token: token});
+        res.status(200).send({ error: false, payload: { result: result, token: token}});
+        // res.status(200).send({result: result, auth: true, token: token});
       }
-      
+  })
+});
+
+//New User Registration API
+app.post('/newuser', (req, res)=> {
+  var {fname, lname, email, pwd } = req.body;
+  db.collection('users').insertOne( {
+    'fname' : fname,
+    'lname': lname,
+    'email': email,
+    'password': pwd
+  }, (err, result)=> {
+    if (err) return res.send(err);
+    console.log('User added');
+    res.send(result);
   })
 });
 
 //Fetching all the Blood Requests
-app.get('/bloodreqs',verifyToken, (req, res)=> 
+app.get('/api/bloodreqs',verifyToken, (req, res)=> 
 {
-  //fetching data from Mongodb Collection called 'bloodreqs'
-  // and sending the result to back end
   db.collection('bloodreqs').find({}).toArray( (err, result)=> 
   {
-    //if any error in fetching data from mongodb, log the error
-    if (err) return console.log(err);
-    //else send it to the client in the response
-    console.log('result Fetched');
-    res.send(JSON.stringify(result)); //sending the data as a JSON String
+    if(err)
+    {
+      res.status(200).send({ error: true, payload: { result: null}});
+    }
+    else
+    {
+      res.status(200).send({ error: false, payload: { result: result}});
+    }
   })
 });
 
 //Adding New Blood Request
-app.post('/newbloodreq',verifyToken, (req, res)=> {
-  var ptntname = req.body.ptntname;
+app.post('/api/newbloodreq',verifyToken, (req, res)=> {
   var { ptntname, ptntage, ptntgender, ptntblgrp, unitsreq, reqreason, dateofreq, hospname, hosploc, attendeename, cntctno1, cntctno2, requestOwner} = req.body;
-  console.log(ptntname);
   db.collection('bloodreqs').insertOne({
     'ptntname': ptntname,
     'ptntage': ptntage,
@@ -96,96 +105,90 @@ app.post('/newbloodreq',verifyToken, (req, res)=> {
     'cntctno2': cntctno2,
     'requestOwner': requestOwner
   }, (err, result)=> {
-    if (err) return console.log(err);
-    console.log('added');
-    console.log('added again');
-    res.send(result);
-  })
-});
-
-//
-app.post('/newuser', (req, res)=> {
-  var {fname, lname, email, pwd } = req.body;
-  // console.log(fname, lname, email, pwd);
-  db.collection('users').insertOne( {
-    'fname' : fname,
-    'lname': lname,
-    'email': email,
-    'password': pwd
-  }, (err, result)=> {
-    if (err) return res.send(err);
-    console.log('User added');
-    res.send(result);
-  })
-});
-
-
-app.post('/api/loginUser', (req, res)=> {
-  console.log(req.query); // { username: 'Livingstone', password: 'livingstonepwd'}
-  var usr = req.query.username;
-  var pwd = req.query.password;
-
-  if( usr === 'Livingstone' && pwd === 'livingstonepwd')
-  {
-    res.send('authorized');
-  }
-  else
-  {
-    res.send('unauthorized');
-  }
-});
-
-
-app.post('/myrequests',verifyToken, (req, res)=> {
-  var  requestOwner = req.body.requestOwner;
-  console.log(requestOwner);
-  db.collection('bloodreqs').find({'requestOwner': requestOwner}, {}).toArray((err, result)=> 
-  {
-    //if any error in fetching data from mongodb, log the error
-    if (err) return console.log(err);
-    //else send it to the client in the response
-    console.log('My Requests fetched');
-    console.log(result);
-    if(result.length === 0)
+    if (err)
     {
-      res.send('none');
+      res.status(200).send({ error: true, payload: { result: null}})
     }
     else
     {
-      res.send(JSON.stringify(result)); //sending the data as a JSON String
+      res.status(200).send({ error: false, payload: { result: 'dpUpdated'}});
+    }
+    
+    
+  })
+});
+
+app.post('/api/myrequests',verifyToken, (req, res)=> {
+  var  requestOwner = req.body.requestOwner;
+  // console.log(requestOwner);
+  db.collection('bloodreqs').find({'requestOwner': requestOwner}, {}).toArray((err, result)=> 
+  {
+    //if any error in fetching data from mongodb, log the error
+    if (err)
+    {
+      res.status(200).send({ error: true, payload: { result: null, errormsg: 'exception'}});
+    }
+    if(result.length === 0)
+    {
+      res.status(200).send({ error: false, payload: { result: null, errormsg: 'norequests'}});
+    }
+    else
+    {
+      res.status(200).send({ error: false, payload: { result: result}});
+      // res.send(JSON.stringify(result)); //sending the data as a JSON String
     }
     
   });
 });
 
+app.post('/api/myprofile', verifyToken, (req, res)=> {
+  var email = req.body.email;
+  db.collection('users').find({'email': email },{}).toArray( (err, result)=> {
+    if(err)
+    {
+      res.status(200).send({ error: true, payload: { result: null}});
+      // res.status(200).send({ error: true, payload: { result: null}});
+    }
+    else
+    {
+      res.status(200).send({ error: false, payload: { result: result}});
+      // res.status(200).send({payload: result, result: true});
+    }
+  })
+});
+
 //VerifyToken function to verify the token from the LocalStorage
 function verifyToken(req, res, next)
 {
-  console.log('verifying token...');
+  // console.log('verifying token...');
   try {
     if(!req.headers.authorization)
     {
-      return res.status(401).send('Unauthorized request');
+      return res.status(401).send({ error: true, payload: { result: null}});
+      // return res.status(401).send('Unauthorized request');
     }
   
     let token = req.headers.authorization.split(' ')[1];
     let token1 = req.headers.authorization.split(' ')[0];
     if(token === 'null' || token === null || token1 === null || token1 === 'null')
     {
-      return res.status(401).send('Unauthorized request');
+      return res.status(401).send({ error: true, payload: { result: null}});
+      // return res.status(401).send('Unauthorized request');
     }
   
     let payload = jwt.verify(token, 'secretKey');
     if(!payload)
     {
-      return res.status(401).send('Unauthorized request');
+      return res.status(401).send({ error: true, payload: { result: null}});
+      // return res.status(401).send('Unauthorized request');
     }
     req.userId = payload.subject;
-    console.log('token verified...');
+    // console.log('token verified...');
     next();
     }
     catch(e)
     {
-      return res.status(401).send('Unauthorized request');
+      return res.status(401).send({ error: true, payload: { result: null}});
+      // return res.status(401).send('Unauthorized request');
     }
 }  //verifyToken ends here

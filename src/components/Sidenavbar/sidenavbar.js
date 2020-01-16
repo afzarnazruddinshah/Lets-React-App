@@ -1,10 +1,10 @@
-import React , { PureComponent } from 'react';
+import React , { Component } from 'react';
 import './sidenavbar.css';
 import {Link} from 'react-router-dom';
 import { FaSignOutAlt } from "react-icons/fa";
 import {Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-class Sidenavbar extends PureComponent 
+class Sidenavbar extends Component 
 {
     state = {
         logout: false
@@ -25,9 +25,13 @@ class Sidenavbar extends PureComponent
         }
     }
 
-    handleHistoryPush = e => {
+    goToMyRequests = e => {
 
         this.props.history.push('/landingpage/myrequests');
+    }
+
+    goToMyProfile = e => {
+        this.props.history.push('/landingpage/myprofile');
     }
 
     render() 
@@ -40,8 +44,8 @@ class Sidenavbar extends PureComponent
         return (
             <div className="sidenav">
                 <p id="user-fname">{this.props.fname}</p>
-                <Link to="/landingpage" tabIndex="5" >My Profile</Link>
-                <a href="##" onClick={this.handleHistoryPush} tabIndex="6">My Requests</a> 
+                <a href="##" onClick={this.goToMyProfile} tabIndex="5" >My Profile</a>
+                <a href="##" onClick={this.goToMyRequests} tabIndex="6">My Requests</a> 
                 <a href="##"  tabIndex="7">My Donations</a>
                 <a href="##" tabIndex="8"> My Medical Profile</a>
                 <a href="##"  onClick={this.openAlert}  id="logout-btn" tabIndex="9">Logout <FaSignOutAlt /></a>

@@ -1,20 +1,29 @@
-import React, { Component, Fragment, Suspense } from 'react';
+import React, { Component, Fragment, Suspense, lazy } from 'react';
 import { connect } from 'react-redux'
 import {BrowserRouter, Route, Redirect,Switch } from 'react-router-dom'
 import {withRouter } from 'react-router-dom';
-import Feed from '../Feed/feed';
+ //import Feed from '../Feed/feed';
 import './landingpage.css';
 import '../App/App.css';
 import Header1 from '../Header1/header1';
 import Sidenavbar from '../Sidenavbar/sidenavbar';
 import ErrorBoundary from '../ErrorBoundary/errorboundary';
-import DisplayDetails from '../BloodReqDetails/displayDetails';
-import MyRequests from '../MyRequests/myrequests';
+//import DisplayDetails from '../BloodReqDetails/displayDetails';
+ //import MyRequests from '../MyRequests/myrequests';
 import Spinner from '../Spinner/spinner';
-import RequestForm from '../RaiseRequest/requestform';
+//import MyProfile from '../MyProfile/myprofile';
+ //import RequestForm from '../RaiseRequest/requestform';
+
+
+//Lazy Loading Components Defined here
+const Feed = lazy(()=> import('../Feed/feed'));
+const RequestForm = lazy( ()=> import('../RaiseRequest/requestform'));
+const DisplayDetails = lazy( ()=> import('../BloodReqDetails/displayDetails'));
+const MyRequests = lazy( ()=> import('../MyRequests/myrequests'));
+const MyProfile = lazy( ()=> import('../MyProfile/myprofile'));
+
 class LandingPage extends Component
 {
-
   componentDidMount()
   {
     document.title = "LetsReact | Home";
@@ -32,7 +41,6 @@ class LandingPage extends Component
       return <Redirect to='/login' /> 
     }
 
-
     return (
       <div className="App">
           <div className="App-header">
@@ -48,50 +56,64 @@ class LandingPage extends Component
           </Fragment>
           
           <BrowserRouter>
-      <Switch>
-        <Route exact path="/landingpage" render={() => (
-                  <Redirect to="/landingpage/feed"/>
-                    )}/>
+            <Switch>
+              <Route exact path="/landingpage" render={() => (
+                        <Redirect to="/landingpage/feed"/>
+                          )}/>
 
-        <Route exact path="/landingpage/feed" render={()=> 
-        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
-            <ErrorBoundary>
-              <Feed />
-            </ErrorBoundary>
-          </Suspense>
-          }/>
-        
-        <Route path="/landingpage/raiserequest/" render={()=> 
-          <div className="bloodrequest requestform">
-            <ErrorBoundary>
-              <RequestForm />
-            </ErrorBoundary>
-          
-        <br /><br />
-        </div>
-        } />
-      
-        <Route path='/landingpage/bloodreq' render={ ()=> 
-            <Fragment>
-            <ErrorBoundary>
-                <DisplayDetails req={this.props}/>
-            </ErrorBoundary>   
-            </Fragment>
-          } />
-        
-        <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
-          <Route path='/landingpage/myrequests/' render={ ()=> 
+              <Route exact path="/landingpage/feed" render={()=> 
+              <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+                  <ErrorBoundary>
+                    <Feed />
+                  </ErrorBoundary>
+                </Suspense>
+                }/>
+              
+              
+              <Route path="/landingpage/raiserequest/" render={()=> 
+              <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+                <div className="bloodrequest requestform">
+                  <ErrorBoundary>
+                    <RequestForm />
+                  </ErrorBoundary>
+                  <br /><br />
+                </div>
+              </Suspense>
+              } />
             
-              <Fragment>
-                <ErrorBoundary>
-                    <MyRequests />
-                </ErrorBoundary>
-              </Fragment>
-              }
-          />
-        </Suspense>
-      </Switch>
-  </BrowserRouter>
+              <Route path='/landingpage/bloodreq' render={ ()=> 
+               <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+                  <Fragment>
+                    <ErrorBoundary>
+                        <DisplayDetails req={this.props}/>
+                    </ErrorBoundary>   
+                  </Fragment>
+                  </Suspense>
+                } />
+              
+              <Route path='/landingpage/myrequests/' render={ ()=> 
+              <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+                    <Fragment>
+                      <ErrorBoundary>
+                          <MyRequests />
+                      </ErrorBoundary>
+                    </Fragment>
+                    </Suspense>
+                    }
+                />
+                <Route path="/landingpage/myprofile" render={ ()=> 
+                 <Suspense fallback={<div className="sidebar"> <Spinner /> </div>}>
+                <div className="bloodrequest requestform">
+                    <ErrorBoundary>
+                      <MyProfile />
+                    </ErrorBoundary>
+                    </div>
+                  </Suspense>
+                
+                } />
+
+            </Switch>
+          </BrowserRouter>
           
 
       </div>

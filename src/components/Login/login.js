@@ -109,19 +109,32 @@ class Login extends Component
         const email = this.state.email;
         const password = this.state.pwd;
         //Getting Response from API Call
-        axios.get('http://localhost:3001/loginuser?email='+email+'&password='+password)
+        axios({
+            method: 'post',
+            url: 'http://localhost:3001/api/auth',
+            data: {
+                email: email,
+                password: password
+            },
+            headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+            }
+        })
         .then(res => {
-            if(res.status === 200)
+            if(res.data.error === false)
             {
-                if(res.data.auth === true)
-                {
-                    this.onLoginToApp(email, String(res.data.result.fname), String(res.data.token));
-                    this.handleSetState('isAuth', true);
-                }
-                else
-                {
-                    this.handleSetState('loginerrorvisibility', true);
-                }
+                //Login to Application and Redux Store update
+                this.onLoginToApp(email, String(res.data.payload.result.fname), String(res.data.payload.token));
+                this.handleSetState('isAuth', true);
+            }
+            else if(res.data.error === true && res.data.payload.errormsg === 'exception')
+            {
+                this.handleSetState('networkerr', true);
+            }
+            else if(res.data.error === true && res.data.payload.errormsg === 'notfound')
+            {
+                this.handleSetState('loginerrorvisibility', true);
             }
             })
             .catch( (err)=> {

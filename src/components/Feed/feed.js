@@ -27,7 +27,8 @@ class Feed extends Component {
               cntctno2: '', 
               dateofreq: null
             }
-          ]
+          ],
+          dataError: false
     }
 
     constructor(props)
@@ -41,6 +42,7 @@ class Feed extends Component {
 
     componentDidMount()
     {
+        document.title = "LetsReact | Home";
         this.getBloodReqs();
     }
 
@@ -51,7 +53,7 @@ class Feed extends Component {
         {
             axios({
                 method: 'get',
-                url: 'http://localhost:3001/bloodreqs',
+                url: 'http://localhost:3001/api/bloodreqs',
                 headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -59,10 +61,20 @@ class Feed extends Component {
                 }
             })
             .then(res => {
-                this.setState(
-                ()=> { return { bloodreqs: (res.data)};}
-                );
-
+                if(res.data.error === false)
+                {
+                    this.setState(
+                        ()=> { return { bloodreqs: (res.data.payload.result)};},
+                        ()=> { console.log('upated');}
+                    );
+                }
+                else if(res.data.error === true)
+                {
+                    this.setState(
+                        ()=> { return { dataError: true}},
+                        ()=> { console.log('dataError Happened');}
+                    );
+                }
             })
             .catch((err)=> {
                 this.setState(
