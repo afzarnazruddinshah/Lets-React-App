@@ -39,9 +39,8 @@ function loadFromLocalStorage(){
     }
 }
 
- console.log(React.version);
+//console.log(React.version);
 const persistedState = loadFromLocalStorage();
-
 
 export let store = createStore(combinedReducer,persistedState, applyMiddleware(thunk));
 

@@ -3,13 +3,16 @@ import axios from 'axios';
 import './myrequests.css';
 //const BloodRequest = lazy(()=> import('../RaiseRequest/bloodrequest'));
 import BloodRequest from '../RaiseRequest/bloodrequest';
+import { MY_REQUESTS_API } from '../ConstDataRepo/constants';
 
 class MyRequests extends Component {
     state = { 
         requestOwner: '',
-        bloodreqs: [],
+        bloodreqs: [
+         
+        ],
         dataPresent: false,
-        norequests: false
+        norequests: true
      }
      
      componentDidMount()
@@ -26,7 +29,7 @@ class MyRequests extends Component {
          var token = String(localStorage.getItem('token'));
          axios({
           method: 'post',
-          url: 'http://localhost:3001/api/myrequests',
+          url: MY_REQUESTS_API,
           data: {
             requestOwner: requestOwner
           },
@@ -37,10 +40,10 @@ class MyRequests extends Component {
           }
         })
          .then(res => {
-           if(res.data.error === false)
+           if(res.data.error === false && res.data.payload.result !== null)
            {
               this.setState(
-                ()=> { return { bloodreqs: (res.data.payload.result), dataPresent: true};},
+                ()=> { return { bloodreqs: (res.data.payload.result), dataPresent: true, norequests: false};},
                 ()=> { console.log('api fetched');} );
            }
            else if(res.data.error === false && res.data.payload.result === null)
@@ -64,8 +67,8 @@ class MyRequests extends Component {
      
     render() 
     { 
-      const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
-      const feed = this.state.norequests === true ? <small id="no-request">You don't have any requests. Also, Thank God for keeping your acquaintances safe !</small> : mapper;
+      // const mapper = this.state.norequests === false?  : null;
+      const feed = this.state.norequests === true ? <small id="no-request">You don't have any requests. Also, Thank God for keeping your acquaintances safe !</small>   : this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>);
       return( 
             <div className="bloodrequest">
                 <p>My Blood Requests:</p>

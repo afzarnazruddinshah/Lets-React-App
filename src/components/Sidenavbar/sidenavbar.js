@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import './sidenavbar.css';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 import { FaSignOutAlt } from "react-icons/fa";
 import {Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -26,7 +26,6 @@ class Sidenavbar extends Component
     }
 
     goToMyRequests = e => {
-
         this.props.history.push('/landingpage/myrequests');
     }
 
@@ -43,7 +42,7 @@ class Sidenavbar extends Component
 
         return (
             <div className="sidenav">
-                <p id="user-fname">{this.props.fname}</p>
+                <p id="user-fname">Hey {this.props.fname}</p>
                 <a href="##" onClick={this.goToMyProfile} tabIndex="5" >My Profile</a>
                 <a href="##" onClick={this.goToMyRequests} tabIndex="6">My Requests</a> 
                 <a href="##"  tabIndex="7">My Donations</a>

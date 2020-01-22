@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Spinner from '../Spinner/spinner';
 import { Redirect } from 'react-router-dom';
+import { FEED_API } from '../ConstDataRepo/constants';
 const BloodRequest = lazy(()=> import('../RaiseRequest/bloodrequest'));
 
 class Feed extends Component {
@@ -53,7 +54,7 @@ class Feed extends Component {
         {
             axios({
                 method: 'get',
-                url: 'http://localhost:3001/api/bloodreqs',
+                url: FEED_API,
                 headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -65,7 +66,7 @@ class Feed extends Component {
                 {
                     this.setState(
                         ()=> { return { bloodreqs: (res.data.payload.result)};},
-                        ()=> { console.log('upated');}
+                        ()=> { console.log(this.state.bloodreqs);}
                     );
                 }
                 else if(res.data.error === true)
@@ -89,11 +90,8 @@ class Feed extends Component {
         if (this.state.isAuth === false) {
             return <Redirect to='/login' /> 
         }
-
         const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
         const feed = this.state.bloodreqs[0].dateofreq === null ? <Spinner /> : mapper;
-
-
         return (  
         <div className="bloodrequest">
             <p>Blood Requirements:</p>

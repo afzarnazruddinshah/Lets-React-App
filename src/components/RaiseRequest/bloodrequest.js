@@ -13,7 +13,7 @@ class BloodRequest extends Component {
 
     onAddBloodRequest = () =>
     {
-        console.log("Displaying Request Details..");
+        // console.log("Displaying Request Details..");
         this.props.onAddBloodRequest(this.props.bldreq);
         this.setState(
             ()=> { return { redirect: true};}

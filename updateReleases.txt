@@ -1,0 +1,17 @@
+Update#000 - No Reload
+This update is all about making the application less reloading, made use of this.props.history.push('/path'); 
+Impacted Components- Feed, MyRequests, MyProfile, RaiseRequest, Login (excluding sigup module)
+
+Update#001 - APIDesignUpdate
+This update was a result of API Design change in the backend of the application. 
+Impacted Pages - All pages with API Calls and dbserver.js (back-end core source file)
+
+Update#002 - Reusable Components Design Change
+This update Includes the following:
+1. All forms are made of Reusable components
+2. Form Validation handle is done
+3. MyProfile Section can be updated
+4. Password has been hashed and stored into the db
+5. 
+
+

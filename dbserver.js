@@ -2,16 +2,14 @@ const express = require('express'); //for creating APIs
 const bodyParser = require('body-parser'); //middleware to parse request bodies
 const cors = require('cors'); // to enable CORS (Cross-Origin-Resource-Sharing)
 const jwt = require('jsonwebtoken');
-// Initialize the app
-const app = express();
-// https://expressjs.com/en/guide/routing.html
+var crypto = require('crypto'); 
 
 const PORT =3001;
-//*****Setting up the Express Server*****//
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// Then use it before your routes are set up:
 app.use(cors());
+const SALT = '4b01aeb1815b65aadf67ed74a527f744';
 
 //*****Setting up the MongoDb Client *****//
 var mongoDbURL = 'mongodb://localhost:27017'
@@ -20,6 +18,9 @@ MongoClient.connect(mongoDbURL, (err, database) => {
      if(err) throw err;
      db = database.db('letsreact') // Specify DB name here
      app.listen(PORT, () => {
+       console.log('********************************************');
+       console.log('  Server Started; Running on Port: '+PORT+' ');
+       console.log('********************************************');
   });
 });
 
@@ -32,8 +33,9 @@ app.get('/', (req, res)=> {
 //Logging in to the Application
 app.post('/api/auth', (req, res)=> {
   var { email, password} = req.body;
+  var hashedPwd = crypto.pbkdf2Sync(password, SALT, 1000, 64, `sha512`).toString(`hex`); 
   db.collection('users').findOne(
-    {email: email, password: password}
+    {email: email, password: hashedPwd}
     , (err, result)=> {
       if (err)
       {
@@ -51,7 +53,6 @@ app.post('/api/auth', (req, res)=> {
         let payload = { subject: result._Id};
         let token = jwt.sign(payload, 'secretKey');
         res.status(200).send({ error: false, payload: { result: result, token: token}});
-        // res.status(200).send({result: result, auth: true, token: token});
       }
   })
 });
@@ -59,11 +60,15 @@ app.post('/api/auth', (req, res)=> {
 //New User Registration API
 app.post('/newuser', (req, res)=> {
   var {fname, lname, email, pwd } = req.body;
-  db.collection('users').insertOne( {
+
+  //Password Hashing
+  // var salt = crypto.randomBytes(16).toString('hex'); 
+  var hashedPwd = crypto.pbkdf2Sync(pwd, SALT, 1000, 64, `sha512`).toString(`hex`); 
+  db.collection('users').insertOne({
     'fname' : fname,
     'lname': lname,
     'email': email,
-    'password': pwd
+    'password': hashedPwd
   }, (err, result)=> {
     if (err) return res.send(err);
     console.log('User added');
@@ -113,9 +118,7 @@ app.post('/api/newbloodreq',verifyToken, (req, res)=> {
     {
       res.status(200).send({ error: false, payload: { result: 'dpUpdated'}});
     }
-    
-    
-  })
+  });
 });
 
 app.post('/api/myrequests',verifyToken, (req, res)=> {
@@ -156,6 +159,28 @@ app.post('/api/myprofile', verifyToken, (req, res)=> {
     }
   })
 });
+
+app.post('/api/myprofile/update', verifyToken, (req, res)=> {
+  var { email, fname, lname, age, gender, dob, bloodgroup, contact, city, state, landmark} = req.body;
+  db.collection('users').updateMany( 
+    { "email": email}, 
+    { $set:
+    { 
+      "fname": fname, "lname": lname,
+      "age": age, "gender": gender, "dob": dob, "bloodgroup": bloodgroup,
+      "contact": contact, "city": city, "state": state, "landmark": landmark
+    } }, (err, result)=> {
+      if(err)
+      {
+        console.log(err);
+        res.status(200).send({ error: true, payload: { result: null}});
+      }
+      else
+      {
+        res.status(200).send({error: false, payload: { result: result}});
+      }
+    });
+  });
 
 //VerifyToken function to verify the token from the LocalStorage
 function verifyToken(req, res, next)

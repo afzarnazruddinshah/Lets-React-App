@@ -5,6 +5,7 @@ import { withRouter, Redirect } from "react-router-dom";
 import './login.css';
 import { LogoutFromApp, LoginToApp } from '../../actions/loginActions';
 import { removeBloodRequest} from '../../actions/bloodReqActions';
+import { AUTH_API } from '../ConstDataRepo/constants';
 // import { loginForm } from './loginForm';
 class Login extends Component
 {
@@ -111,7 +112,7 @@ class Login extends Component
         //Getting Response from API Call
         axios({
             method: 'post',
-            url: 'http://localhost:3001/api/auth',
+            url: AUTH_API,
             data: {
                 email: email,
                 password: password
@@ -239,9 +240,9 @@ class Login extends Component
             .then(res => {
                 if(res.data.result.n === 1)
                 {
-                    this.updateCurrentUser(fname);
-                    this.onLoginToApp(email,fname);
-                    this.handleSetState('isSignUpAuth', true);
+                    this.props.history.push('/');
+                    // this.onLoginToApp(email,fname);
+                    // this.handleSetState('isSignUpAuth', true);
                 }
             });
         } //else ends here
@@ -456,5 +457,5 @@ const mapActionsToProps = {
     onremoveBloodRequest: removeBloodRequest
 }
 
-export default connect(mapStateToProps, mapActionsToProps) (withRouter(Login))
+export default withRouter(connect(mapStateToProps, mapActionsToProps)(Login))
 
