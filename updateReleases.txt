@@ -6,12 +6,21 @@ Update#001 - APIDesignUpdate
 This update was a result of API Design change in the backend of the application. 
 Impacted Pages - All pages with API Calls and dbserver.js (back-end core source file)
 
-Update#002 - Reusable Components Design Change
+#Update002 - Reusable Components Design Change
 This update Includes the following:
 1. All forms are made of Reusable components
 2. Form Validation handle is done
 3. MyProfile Section can be updated
 4. Password has been hashed and stored into the db
-5. 
+5. DropDown Options and API_URLS are maintained in a seperate file
+6. Testing with Jest was tried and later the idea was dropped off.
 
 
+#Update003 - UI and Email Existence Check
+This update includes the following:
+1. SnackBars for Notifications
+2. Email Already Present done
+3. MyProfile Warnings fixed
+4. Material-UI Dialog for Logout alert done
+5. Async and await - done for Feed
+6. DefaultProps - for SideNavBar and BloodRequest

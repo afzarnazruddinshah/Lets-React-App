@@ -33,7 +33,7 @@ class InputField extends Component {
       date1 = yyyy + "-" + dd + "-" + mm;
     }
 
-    const value = date1 === null ? this.props.value : date1;
+    const value = date1 === null ? this.props.value === 0 ? '' : this.props.value : date1;
 
     return (
       <div className="card-column">

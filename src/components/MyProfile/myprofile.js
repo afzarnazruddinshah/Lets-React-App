@@ -12,12 +12,16 @@ import {
   bloodgroupsDDOptions,
   MY_PROFILE_UPDATE_API
 } from "../ConstDataRepo/constants";
+import Snackbar from '@material-ui/core/Snackbar';
+import {Alert} from '@material-ui/lab';
+
 
 class MyProfile extends Component {
   state = {
+    openSnackBar: false,
     fname: "",
     lname: "",
-    age: "",
+    age: 0,
     gender: "",
     dob: "",
     bloodgroup: "",
@@ -46,15 +50,21 @@ class MyProfile extends Component {
     bloodgroupErr: false
   };
 
+  constructor(props)
+  {
+    super(props);
+    this.getProfile = this.getProfile.bind(this);
+  }
+
   componentDidMount() {
     document.title = "LetsReact | My Profile";
     this.getProfile();
   }
 
-  getProfile = () => {
+  async getProfile(){
     //Fetching Variables for Ajax Calls
     var token = String(localStorage.getItem("token"));
-    axios({
+    await axios({
       method: "post",
       url: MY_PROFILE_API,
       data: {
@@ -67,13 +77,14 @@ class MyProfile extends Component {
       }
     })
       .then(res => {
+        console.log(res);
         if (res.data.error === false) {
           this.setState(
             () => {
               return {
                 fname: res.data.payload.result[0].fname,
                 lname: res.data.payload.result[0].lname,
-                age: res.data.payload.result[0].age,
+                age: res.data.payload.result[0].age === null ? 0: res.data.payload.result[0].age,
                 gender: res.data.payload.result[0].gender,
                 dob: res.data.payload.result[0].dob,
                 bloodgroup: res.data.payload.result[0].bloodgroup,
@@ -86,7 +97,7 @@ class MyProfile extends Component {
               };
             },
             () => {
-              console.log();
+              console.log(this.state);
             }
           );
         } else if (res.data.error === true) {
@@ -113,6 +124,7 @@ class MyProfile extends Component {
       });
   };
 
+  
   handleSetState = (key, value) => {
     this.setState(
       () => {
@@ -123,6 +135,10 @@ class MyProfile extends Component {
       }
     );
   };
+
+  handleSnackBar = e => {
+    this.handleSetState('openSnackBar', false);
+  }
 
   validateDropDown = (key, value) => {
     if ((key === "gender" || key === "bloodgroup") && value !== "null") {
@@ -186,7 +202,11 @@ class MyProfile extends Component {
         // console.log(res);
         if( res.data.payload.result.matchedCount === 1 && res.data.payload.result.modifiedCount === 1)
         {
-          alert('Your Profile has been successfully updated');
+          this.handleSetState('openSnackBar', true);
+          // setTimeout(() => {
+          //   this.handleSetState('openSnackBar', false);
+          // }, 3000);
+          // alert('Your Profile has been successfully updated');
         }
       })
       .catch( err=> {
@@ -227,7 +247,7 @@ class MyProfile extends Component {
 
             <InputField
               label="Age of User"
-              value={this.state.age}
+              value={this.state.age === undefined ? 0: this.state.age}
               type="number"
               name="age"
               id="age"
@@ -285,7 +305,7 @@ class MyProfile extends Component {
 
             <InputField
               label="Contact Number"
-              value={this.state.contact}
+              value={this.state.contact === undefined ? '' : this.state.contact}
               type="tel"
               name="contact"
               placeholder="Ex. 8248200614"
@@ -300,7 +320,7 @@ class MyProfile extends Component {
             <InputField
               label="City"
               type="text"
-              value={this.state.city}
+              value={this.state.city === undefined ? '' : this.state.city}
               name="city"
               id="city"
               placeholder="Ex. Madurai"
@@ -311,7 +331,7 @@ class MyProfile extends Component {
             <InputField
               label="State"
               type="text"
-              value={this.state.state}
+              value={this.state.state === undefined ? ''  : this.state.state}
               name="state"
               id="state"
               placeholder="Ex. Tamilnadu"
@@ -322,7 +342,7 @@ class MyProfile extends Component {
             <InputField
               type="text"
               label="Residence Landmark"
-              value={this.state.landmark}
+              value={this.state.landmark === undefined ? '' : this.state.landmark}
               name="landmark"
               id="landmark"
               placeholder="Ex. Kakatiya Hospital"
@@ -337,6 +357,23 @@ class MyProfile extends Component {
             </div>
           </div>
         </form>
+        {/* Snack Bar Here */}
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.openSnackBar}
+          onClose={this.handleSnackBar}
+          autoHideDuration={4000}
+        >
+         <Alert 
+            onClose={this.handleSnackBar} 
+            severity="success"
+            variant="filled">
+          Your Profile has been Updated Successfully !
+        </Alert>
+        </Snackbar>
       </div>
     );
   }

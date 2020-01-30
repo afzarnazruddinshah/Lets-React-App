@@ -40,7 +40,8 @@ class BloodRequest extends Component {
                         {this.props.bldreq.dateofreq} <br/>
                         Hospital : {this.props.bldreq.hospname}, 
                         {this.props.bldreq.hosploc} &nbsp;
-                        <a href="##" id="knowmore" onClick={this.onAddBloodRequest}>...know more </a> </p>
+                        <a href="##" id="knowmore" onClick={this.onAddBloodRequest}>...know more </a> 
+                    </p>
                  
                 </div>
                 <br />
@@ -56,5 +57,23 @@ const mapStateToProps = (state) =>
 
 const mapActionsToProps = {
     onAddBloodRequest : addBloodRequest
+}
+
+BloodRequest.defaultProps = {
+    id: 1,
+    bldreq: {
+        ptntblgrp: '',
+        reqreason: '',
+        dateofreq: '',
+        hospname: '',
+        hosploc: '',
+        ptntname: '',
+        ptntgender: '', 
+        ptntage: '', 
+        unitsreq: '', 
+        attendeename: '', 
+        cntctno1: '', 
+        cntctno2: '', 
+    }
 }
 export default connect(mapStateToProps,mapActionsToProps)(BloodRequest);

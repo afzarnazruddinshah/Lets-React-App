@@ -28,7 +28,8 @@ class Login extends Component
         pwderr: false,
         networkerr: false,
         isSignUpAuth: false,
-        showLogin: true
+        showLogin: true,
+        emailAlreadyPresent: false
     }
 
     componentDidMount()
@@ -238,9 +239,18 @@ class Login extends Component
                 pwd: pwd
             })
             .then(res => {
-                if(res.data.result.n === 1)
+                console.log(res);
+                if(res.data.error === true)
                 {
-                    this.props.history.push('/');
+                    this.handleSetState('networkerr', true);
+                }
+                if(res.data.error === false && res.data.payload.result === 'alreadyPresent')
+                {
+                    this.handleSetState('emailAlreadyPresent', true);
+                }
+                if( res.data.payload.result.n === 1)
+                {
+                    // this.props.history.push('/');
                     // this.onLoginToApp(email,fname);
                     // this.handleSetState('isSignUpAuth', true);
                 }
@@ -270,8 +280,9 @@ class Login extends Component
         const fnameerr = this.state.fnameerr === true ? nameerrmsg: null;
         const lnameerr = this.state.lnameerr === true? nameerrmsg: null;
 
+        const emailAlreadyPresent = <Fragment> <br/>This email already has an account</Fragment>
         const emailerrmsg = <Fragment><br /> The email Id is invalid</Fragment>;
-        const emailerr = this.state.emailerr === true? emailerrmsg: null;
+        const emailerr = this.state.emailerr === true? emailerrmsg: this.state.emailAlreadyPresent === true ? emailAlreadyPresent: null;
 
         const pwderrmsg = <Fragment> <br />Passwords Don't Match</Fragment>;
         const pwderr = this.state.pwderr === true? pwderrmsg: null;

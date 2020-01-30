@@ -1,7 +1,7 @@
 import React, { Component , lazy} from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-
+import './feed.css';
 import Spinner from '../Spinner/spinner';
 import { Redirect } from 'react-router-dom';
 import { FEED_API } from '../ConstDataRepo/constants';
@@ -39,6 +39,8 @@ class Feed extends Component {
         this.state.username = this.props.auth.username;
         this.state.isAuth = this.props.auth.isAuth;
         this.state.token = this.props.auth.token;
+        //Function Binding to this
+        this.getBloodReqs = this.getBloodReqs.bind(this);
     }
 
     componentDidMount()
@@ -47,12 +49,12 @@ class Feed extends Component {
         this.getBloodReqs();
     }
 
-    getBloodReqs = () => 
+    async getBloodReqs() 
     {
         var token = String(this.state.token);
         if(token !== 'none')
         {
-            axios({
+            await axios({
                 method: 'get',
                 url: FEED_API,
                 headers: {

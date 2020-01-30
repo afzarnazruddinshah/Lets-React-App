@@ -1,4 +1,4 @@
-import React, { Component , lazy } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import './myrequests.css';
 //const BloodRequest = lazy(()=> import('../RaiseRequest/bloodrequest'));
@@ -15,19 +15,24 @@ class MyRequests extends Component {
         norequests: true
      }
      
+     constructor(props)
+     {
+       super(props);
+       this.getMyRequests = this.getMyRequests.bind(this);
+     }
      componentDidMount()
      {
        document.title = "LetsReact | My Requests";
       this.getMyRequests();
      }
 
-     getMyRequests = () => 
+     async getMyRequests() 
      {
         //  var requestOwner = this.state.requestOwner;
          var stateProps = JSON.parse(localStorage.getItem('state'));
          var requestOwner = String(stateProps.auth.email);
          var token = String(localStorage.getItem('token'));
-         axios({
+         await axios({
           method: 'post',
           url: MY_REQUESTS_API,
           data: {
@@ -68,7 +73,9 @@ class MyRequests extends Component {
     render() 
     { 
       // const mapper = this.state.norequests === false?  : null;
-      const feed = this.state.norequests === true ? <small id="no-request">You don't have any requests. Also, Thank God for keeping your acquaintances safe !</small>   : this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>);
+      const noRequestsMsg = <small id="no-request">You don't have any requests. Also, Thank God for keeping your family and acquaintances safe !</small>
+      const feed = this.state.norequests === true ? noRequestsMsg   : this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>);
+      
       return( 
             <div className="bloodrequest">
                 <p>My Blood Requests:</p>

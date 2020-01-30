@@ -39,14 +39,11 @@ app.post('/api/auth', (req, res)=> {
     , (err, result)=> {
       if (err)
       {
-        // console.log(err);
         res.status(200).send({ error: true, payload: { token: null, errormsg: 'exception'}});
-        // res.status(200).send({result: 'error', auth: false, token: 'none'});
       }
       if(result === null)
       {
         res.status(200).send({ error: true, payload: { token: null, errormsg: 'notfound'}});
-        // res.status(200).send({result: 'none', auth: false, token:'none'});
       }
       else
       {
@@ -64,16 +61,38 @@ app.post('/newuser', (req, res)=> {
   //Password Hashing
   // var salt = crypto.randomBytes(16).toString('hex'); 
   var hashedPwd = crypto.pbkdf2Sync(pwd, SALT, 1000, 64, `sha512`).toString(`hex`); 
-  db.collection('users').insertOne({
-    'fname' : fname,
-    'lname': lname,
-    'email': email,
-    'password': hashedPwd
-  }, (err, result)=> {
-    if (err) return res.send(err);
-    console.log('User added');
-    res.send(result);
-  })
+
+  db.collection('users').findOne(
+    {email: email}, (err, result)=> {
+      if(err) 
+      {
+        res.status(200).send({ error: true, payload: { result: null}});
+      }
+      else
+      {
+        if(result !== null)
+        {
+          res.status(200).send({ error: false, payload: { result: 'alreadyPresent'}});
+        }
+        else
+        {
+            db.collection('users').insertOne({
+              'fname' : fname,
+              'lname':  lname,
+              'email':  email,
+              'password': hashedPwd
+            }, (err, result)=> {
+              if (err) return res.status(200).send({error: true, payload: { result: null}});
+              else
+              {
+                res.status(200).send({error: false, payload: { result: result}});
+              }
+            });
+        }
+      }
+    });
+
+
 });
 
 //Fetching all the Blood Requests

@@ -1,10 +1,12 @@
 {
+  "homepage": "http://afzarnazruddinshah.github.io/reactpages",
   "name": "letsreact",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.6.0",
+    "@material-ui/core": "^4.9.0",
     "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.40",
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
@@ -29,7 +31,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "nodemon dbserver.js"
+    "server": "nodemon dbserver.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,6 +54,7 @@
     "@babel/preset-env": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
     "babel-jest": "^24.9.0",
+    "gh-pages": "^2.2.0",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
     "react-test-renderer": "^16.12.0",
