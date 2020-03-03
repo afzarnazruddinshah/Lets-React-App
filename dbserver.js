@@ -2,8 +2,7 @@ const express = require('express'); //for creating APIs
 const bodyParser = require('body-parser'); //middleware to parse request bodies
 const cors = require('cors'); // to enable CORS (Cross-Origin-Resource-Sharing)
 const jwt = require('jsonwebtoken');
-var crypto = require('crypto'); 
-
+var crypto = require('crypto');
 const PORT =3001;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -1,5 +1,5 @@
 //React neccessities
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 //Redux neccessities
 import { createStore, applyMiddleware } from "redux";
@@ -9,8 +9,14 @@ import combinedReducer from "./reducers/combinedReducer";
 //Required
 import App from "../src/components/App/App";
 import "./index.css";
-//ServiceWorker
-import * as serviceWorker from "./serviceWorker";
+
+// GraphQL imports
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo';
+
+const clientQL = new ApolloClient({
+  uri: "http://localhost:3002/graphql"
+});
 
 function saveToLocalStorage(state) {
   try {
@@ -41,18 +47,17 @@ export let store = createStore(
   applyMiddleware(thunk)
 );
 
-store.subscribe(() => {
+store.subscribe( () => {
   saveToLocalStorage(store.getState());
 });
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+ReactDOM.render( 
+  <Fragment>
+    <Provider  store={store} >
+      <ApolloProvider client={clientQL}>
+        <App />
+      </ApolloProvider>
+     </Provider>
+  </Fragment>,
   document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

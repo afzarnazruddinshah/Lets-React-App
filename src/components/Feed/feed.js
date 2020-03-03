@@ -97,12 +97,10 @@ class Feed extends Component {
         return (  
         <div className="bloodrequest">
             <p>Blood Requirements:</p>
-            
             <div>
                 {feed}
             </div>
-
-        </div> );
+        </div>);
     }
 }
 

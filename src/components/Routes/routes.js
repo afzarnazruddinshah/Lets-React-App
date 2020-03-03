@@ -25,10 +25,10 @@ const Routes = () =>
                         )}/>
 
                   <Route path='/login' render={ () =>
-                              <div>
+                              <div className="application">
                                   <div className="App-header">
                                     <ErrorBoundary>
-                                      <Header/>
+                                      <Header />
                                     </ErrorBoundary>
                                   </div>
 

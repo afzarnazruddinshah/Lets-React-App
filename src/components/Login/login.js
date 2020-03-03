@@ -6,7 +6,10 @@ import './login.css';
 import { LogoutFromApp, LoginToApp } from '../../actions/loginActions';
 import { removeBloodRequest} from '../../actions/bloodReqActions';
 import { AUTH_API } from '../ConstDataRepo/constants';
-// import { loginForm } from './loginForm';
+import { compose } from 'redux';
+import { graphql } from 'react-apollo';
+import { getUsersQuery, isAuthQuery } from '../../queries/queries';
+
 class Login extends Component
 {
     state = {
@@ -41,8 +44,6 @@ class Login extends Component
         //Checking Server
         this.checkServer();
     }
-
-    componentDidUpdate() {}
 
     checkServer = () => 
     {
@@ -108,48 +109,49 @@ class Login extends Component
     handleSubmit = (event) => 
     {
         event.preventDefault();
-        const email = this.state.email;
-        const password = this.state.pwd;
-        //Getting Response from API Call
-        axios({
-            method: 'post',
-            url: AUTH_API,
-            data: {
-                email: email,
-                password: password
-            },
-            headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-            }
-        })
-        .then(res => {
-            if(res.data.error === false)
-            {
-                //Login to Application and Redux Store update
-                this.onLoginToApp(email, String(res.data.payload.result.fname), String(res.data.payload.token));
-                this.handleSetState('isAuth', true);
-            }
-            else if(res.data.error === true && res.data.payload.errormsg === 'exception')
-            {
-                this.handleSetState('networkerr', true);
-            }
-            else if(res.data.error === true && res.data.payload.errormsg === 'notfound')
-            {
-                this.handleSetState('loginerrorvisibility', true);
-            }
-            })
-            .catch( (err)=> {
-                //console.log(Object.getOwnPropertyNames(err));//**** */ to know the Properties of an Error-Object ******
-                //console.log(Object.getOwnPropertyDescriptor(err, 'stack'));
-                //console.log(Object.getOwnPropertyDescriptor(err, 'message'));
-                var errmsg = Object.getOwnPropertyDescriptor(err, 'message').value;
-                console.log(err);
-                if ( errmsg === 'Network Error')
-                {
-                    this.handleSetState('networkerr', true);
-                }
-            });
+        this.props.isAuthQuery();
+        // const email = this.state.email;
+        // const password = this.state.pwd;
+        // //Getting Response from API Call
+        // axios({
+        //     method: 'post',
+        //     url: AUTH_API,
+        //     data: {
+        //         email: email,
+        //         password: password
+        //     },
+        //     headers: {
+        //     'Content-Type': 'application/json',
+        //     Accept: 'application/json'
+        //     }
+        // })
+        // .then(res => {
+        //     if(res.data.error === false)
+        //     {
+        //         //Login to Application and Redux Store update
+        //         this.onLoginToApp(email, String(res.data.payload.result.fname), String(res.data.payload.token));
+        //         this.handleSetState('isAuth', true);
+        //     }
+        //     else if(res.data.error === true && res.data.payload.errormsg === 'exception')
+        //     {
+        //         this.handleSetState('networkerr', true);
+        //     }
+        //     else if(res.data.error === true && res.data.payload.errormsg === 'notfound')
+        //     {
+        //         this.handleSetState('loginerrorvisibility', true);
+        //     }
+        //     })
+        //     .catch( (err)=> {
+        //         //console.log(Object.getOwnPropertyNames(err));//**** */ to know the Properties of an Error-Object ******
+        //         //console.log(Object.getOwnPropertyDescriptor(err, 'stack'));
+        //         //console.log(Object.getOwnPropertyDescriptor(err, 'message'));
+        //         var errmsg = Object.getOwnPropertyDescriptor(err, 'message').value;
+        //         console.log(err);
+        //         if ( errmsg === 'Network Error')
+        //         {
+        //             this.handleSetState('networkerr', true);
+        //         }
+        //     });
     }
 
     // Validation Logic for First Name and Last Name fields
@@ -260,7 +262,6 @@ class Login extends Component
 
     render()
     {
-
         if (this.state.isAuth === true) 
         {
             return <Redirect to='/landingpage' /> 
@@ -338,7 +339,6 @@ class Login extends Component
                     onClick={forgotPassword}>
                     &nbsp;Forgot Password? <u>Click Here</u> 
                 </p>
-
             </form> 
             </div>
 
@@ -391,18 +391,14 @@ class Login extends Component
                     id="email-signup-error-msg">
                         {emailerr}
                 </small>
-
                 <br/> <br/>
-
                 <input 
                     type="password" 
                     name="pwd"  
                     onChange={this.handleSignUpPwd} 
                     placeholder="Password" 
                     required />
-
                 <br /> <br />
-
                 <input 
                     type="password" 
                     name="confirmpwd" 
@@ -414,9 +410,7 @@ class Login extends Component
                     id="password-error-msg"> 
                     {pwderr}
                 </small>
-
                 <br />
-
                 <button 
                     type="submit">
                     Sign Up
@@ -424,12 +418,13 @@ class Login extends Component
                 <br />
             </form>    
         </div>
-
         const displayDiv = this.state.showLogin === true? loginForm : signupForm;
         function forgotPassword() 
         {
             alert("Forgot Password Functionality is under construction");
         }
+
+        console.log(this.props);
 
         return(
                <div>
@@ -450,7 +445,6 @@ class Login extends Component
                     className={this.state.showLogin === true? '.border-bottom-absent': '.border-bottom-present'}>
                     Sign Up
                     </button>
-
                     {displayDiv}
                 
             </div>
@@ -461,12 +455,13 @@ const mapStateToProps = (state) =>
 {
     return state;
 }
-
+ 
 const mapActionsToProps = {
     onLogoutFromApp : LogoutFromApp,
     onLoginToApp : LoginToApp,
     onremoveBloodRequest: removeBloodRequest
 }
 
-export default withRouter(connect(mapStateToProps, mapActionsToProps)(Login))
-
+export default compose(
+    graphql(getUsersQuery, { name: "getUsersQuery"}),
+    graphql(isAuthQuery, { name: 'isAuthQuery'} ))(withRouter(connect(mapStateToProps, mapActionsToProps)(Login)))

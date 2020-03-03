@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import DisplayDetails from './displayDetails';
 import Sidenavbar from '../Sidenavbar/sidenavbar';
 
-
 class RequestDetails extends Component {
 
     state = {
