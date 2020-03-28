@@ -238,6 +238,7 @@ class RequestForm extends Component {
               min="2019-09-12"
               max="2022-12-12"
               label="Date of Req."
+              value={this.state.dateofreq}
               onChange={this.handleSetState}
               required={true}
             />

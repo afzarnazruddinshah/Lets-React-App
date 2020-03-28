@@ -109,49 +109,49 @@ class Login extends Component
     handleSubmit = (event) => 
     {
         event.preventDefault();
-        this.props.isAuthQuery();
-        // const email = this.state.email;
-        // const password = this.state.pwd;
-        // //Getting Response from API Call
-        // axios({
-        //     method: 'post',
-        //     url: AUTH_API,
-        //     data: {
-        //         email: email,
-        //         password: password
-        //     },
-        //     headers: {
-        //     'Content-Type': 'application/json',
-        //     Accept: 'application/json'
-        //     }
-        // })
-        // .then(res => {
-        //     if(res.data.error === false)
-        //     {
-        //         //Login to Application and Redux Store update
-        //         this.onLoginToApp(email, String(res.data.payload.result.fname), String(res.data.payload.token));
-        //         this.handleSetState('isAuth', true);
-        //     }
-        //     else if(res.data.error === true && res.data.payload.errormsg === 'exception')
-        //     {
-        //         this.handleSetState('networkerr', true);
-        //     }
-        //     else if(res.data.error === true && res.data.payload.errormsg === 'notfound')
-        //     {
-        //         this.handleSetState('loginerrorvisibility', true);
-        //     }
-        //     })
-        //     .catch( (err)=> {
-        //         //console.log(Object.getOwnPropertyNames(err));//**** */ to know the Properties of an Error-Object ******
-        //         //console.log(Object.getOwnPropertyDescriptor(err, 'stack'));
-        //         //console.log(Object.getOwnPropertyDescriptor(err, 'message'));
-        //         var errmsg = Object.getOwnPropertyDescriptor(err, 'message').value;
-        //         console.log(err);
-        //         if ( errmsg === 'Network Error')
-        //         {
-        //             this.handleSetState('networkerr', true);
-        //         }
-        //     });
+        // this.props.isAuthQuery();
+        const email = this.state.email;
+        const password = this.state.pwd;
+        //Getting Response from API Call
+        axios({
+            method: 'post',
+            url: AUTH_API,
+            data: {
+                email: email,
+                password: password
+            },
+            headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+            }
+        })
+        .then(res => {
+            if(res.data.error === false)
+            {
+                //Login to Application and Redux Store update
+                this.onLoginToApp(email, String(res.data.payload.result.fname), String(res.data.payload.token));
+                this.handleSetState('isAuth', true);
+            }
+            else if(res.data.error === true && res.data.payload.errormsg === 'exception')
+            {
+                this.handleSetState('networkerr', true);
+            }
+            else if(res.data.error === true && res.data.payload.errormsg === 'notfound')
+            {
+                this.handleSetState('loginerrorvisibility', true);
+            }
+            })
+            .catch( (err)=> {
+                //console.log(Object.getOwnPropertyNames(err));//**** */ to know the Properties of an Error-Object ******
+                //console.log(Object.getOwnPropertyDescriptor(err, 'stack'));
+                //console.log(Object.getOwnPropertyDescriptor(err, 'message'));
+                var errmsg = Object.getOwnPropertyDescriptor(err, 'message').value;
+                console.log(err);
+                if ( errmsg === 'Network Error')
+                {
+                    this.handleSetState('networkerr', true);
+                }
+            });
     }
 
     // Validation Logic for First Name and Last Name fields
@@ -252,9 +252,9 @@ class Login extends Component
                 }
                 if( res.data.payload.result.n === 1)
                 {
-                    // this.props.history.push('/');
-                    // this.onLoginToApp(email,fname);
-                    // this.handleSetState('isSignUpAuth', true);
+                    this.props.history.push('/');
+                    this.onLoginToApp(email,fname);
+                    this.handleSetState('isSignUpAuth', true);
                 }
             });
         } //else ends here

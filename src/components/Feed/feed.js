@@ -13,6 +13,7 @@ class Feed extends Component {
         fname : 'UnKnownThisTime',
         username: 'unknown', isAuth : false,
         token: 'none',
+        noData: false,
         bloodreqs: [
             {
               ptntname: '', 
@@ -64,11 +65,19 @@ class Feed extends Component {
                 }
             })
             .then(res => {
-                if(res.data.error === false)
+                console.log(res.data.payload.result);
+                if(res.data.error === false && res.data.payload.result.length !== 0)
                 {
+
                     this.setState(
                         ()=> { return { bloodreqs: (res.data.payload.result)};},
                         ()=> { console.log(this.state.bloodreqs);}
+                    );
+                }
+                else if(res.data.error === false && res.data.payload.result.length === 0)
+                {                  
+                    this.setState(
+                        ()=> { return { noData: true}}
                     );
                 }
                 else if(res.data.error === true)
@@ -93,7 +102,8 @@ class Feed extends Component {
             return <Redirect to='/login' /> 
         }
         const mapper = this.state.bloodreqs.map((item, key) => <BloodRequest key={key} bldreq={item} id={key}/>)
-        const feed = this.state.bloodreqs[0].dateofreq === null ? <Spinner /> : mapper;
+        // const feed = this.state.noData === false? this.state.bloodreqs[0].dateofreq === null ? <Spinner /> : mapper: null;
+        const feed = this.state.noData === true? "No Blood Requests at this time" : this.state.bloodreqs[0].dateofreq === null ? <Spinner />: mapper;
         return (  
         <div className="bloodrequest">
             <p>Blood Requirements:</p>

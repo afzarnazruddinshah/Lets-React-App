@@ -10,10 +10,15 @@ class InputField extends Component {
   };
 
   inputChange = e => {
+    console.log(e.target.value);
     this.props.onChange(this.props.name, e.target.value);
   };
 
   render() {
+    if(this.props.type === "date")
+    {
+      console.log(this.props.value);
+    }
     const type = this.props.type;
     var date = this.props.value;
     var date1 = null;
@@ -40,7 +45,7 @@ class InputField extends Component {
         <div className="card">
           <small className="font-size-10">{this.props.label}</small>
           <input
-            value={value}
+            value={this.props.value}
             min={this.props.min}
             max={this.props.max}
             pattern={this.props.pattern}
